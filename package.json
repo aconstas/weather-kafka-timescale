@@ -1,0 +1,23 @@
+{
+  "name": "weather-kafka-timescale",
+  "version": "1.0.0",
+  "description": "A real-time weather data processing system that demonstrates event streaming with Apache Kafka and time-series data storage with TimescaleDB. Built with Node.js microservices for data generation, processing, storage, and analytics.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aconstas/weather-kafka-timescale.git"
+  },
+  "author": "Alex Constas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aconstas/weather-kafka-timescale/issues"
+  },
+  "homepage": "https://github.com/aconstas/weather-kafka-timescale#readme",
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
