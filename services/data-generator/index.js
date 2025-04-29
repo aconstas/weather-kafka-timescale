@@ -34,7 +34,6 @@ async function sendWeatherData() {
 module.exports = {
   connect,
   //sendWeatherData,
-  // Include any other functions your service needs
 };
 
 process.on('SIGINT', async () => {
@@ -55,7 +54,7 @@ function generateData() {
     weatherStations[i].windSpeed = getWindSpeed(weatherStations[i].name);
     weatherStations[i].timestamp = new Date().toISOString();
   }
-
+  //console.log(weatherStations)
   return weatherStations;
 }
 

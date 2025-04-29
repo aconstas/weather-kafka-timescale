@@ -3,4 +3,4 @@ const dataProcessor = require('./services/data-processor')
 
 
 dataGenerator.connect();
-dataProcessor.startConsumer();
+dataProcessor.startDataProcessor();
