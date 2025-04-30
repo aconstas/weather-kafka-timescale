@@ -19,5 +19,6 @@
   "homepage": "https://github.com/aconstas/weather-kafka-timescale#readme",
   "dependencies": {
     "kafkajs": "^2.2.4"
-  }
+  },
+  "devDependencies": {}
 }
