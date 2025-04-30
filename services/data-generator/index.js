@@ -1,27 +1,23 @@
-const { Kafka } = require("kafkajs");
+const { createKafkaClient, setupGracefulShutdown, topics } = require("../../kafka-factory");
 
-// Initialize Kafka client
-const kafka = new Kafka({
-  clientId: "weather-data-generator",
-  brokers: ["localhost:9092"],
-});
+const kafka = createKafkaClient("weather-data-generator");
 
-// Create a producer instance
 const producer = kafka.producer();
 
-// Connect when your service starts
 async function connect() {
   await producer.connect();
-  console.log("Connected to Kafka broker");
+  console.log("Data Generator: Connected to Kafka broker");
+  
+  setupGracefulShutdown({ producer });
+  
   setInterval(sendWeatherData, 10000);
 }
 
-// Function to send weather data
 async function sendWeatherData() {
   const weatherData = generateData();
   try {
     await producer.send({
-      topic: "weather-data-events",
+      topic: topics.weatherData,
       messages: [{ value: JSON.stringify(weatherData) }],
     });
     console.log("Weather data sent to Kafka");
@@ -29,17 +25,6 @@ async function sendWeatherData() {
     console.error("Error sending weather data to Kafka:", error);
   }
 }
-
-// Export functions to be used by other parts of your service
-module.exports = {
-  connect,
-  //sendWeatherData,
-};
-
-process.on('SIGINT', async () => {
-    await producer.disconnect();
-    process.exit(0);
-  });
 
 function generateData() {
   let weatherStations = [
@@ -54,7 +39,7 @@ function generateData() {
     weatherStations[i].windSpeed = getWindSpeed(weatherStations[i].name);
     weatherStations[i].timestamp = new Date().toISOString();
   }
-  //console.log(weatherStations)
+  
   return weatherStations;
 }
 
@@ -159,4 +144,7 @@ function getWindSpeed(station) {
   return (Math.random() * (max - min) + min).toFixed(1);
 }
 
-// console.log(generateData());
+// Export connect function for service initialization
+module.exports = {
+  connect,
+};
