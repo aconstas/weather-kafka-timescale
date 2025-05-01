@@ -1,15 +1,19 @@
-const { createKafkaClient, setupGracefulShutdown, topics } = require("../../kafka-factory");
+import {
+  createKafkaClient,
+  setupGracefulShutdown,
+  topics,
+} from "../../kafka-factory.js";
 
 const kafka = createKafkaClient("weather-data-generator");
 
 const producer = kafka.producer();
 
-async function connect() {
+export async function connect() {
   await producer.connect();
   console.log("Data Generator: Connected to Kafka broker");
-  
+
   setupGracefulShutdown({ producer });
-  
+
   setInterval(sendWeatherData, 10000);
 }
 
@@ -39,7 +43,7 @@ function generateData() {
     weatherStations[i].windSpeed = getWindSpeed(weatherStations[i].name);
     weatherStations[i].timestamp = new Date().toISOString();
   }
-  
+
   return weatherStations;
 }
 
@@ -143,8 +147,3 @@ function getWindSpeed(station) {
 
   return (Math.random() * (max - min) + min).toFixed(1);
 }
-
-// Export connect function for service initialization
-module.exports = {
-  connect,
-};

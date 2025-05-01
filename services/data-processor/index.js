@@ -1,8 +1,8 @@
-const {
+import {
   createKafkaClient,
   setupGracefulShutdown,
   topics,
-} = require("../../kafka-factory");
+} from "../../kafka-factory.js";
 
 const kafka = createKafkaClient("weather-data-processor");
 
@@ -13,7 +13,7 @@ const producer = kafka.producer();
  * Start the data processor service.
  * Connects consumer and producer, sets up message handling.
  */
-async function startDataProcessor() {
+export async function startDataProcessor() {
   const consumer = kafka.consumer({ groupId: "data-processor" });
 
   try {
@@ -33,7 +33,7 @@ async function startDataProcessor() {
     // Start consuming messages
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
-        console.log(`Processing message from partition ${partition}`);
+        // console.log(`Processing message from partition ${partition}`);
 
         try {
           const messageData = JSON.parse(message.value);
@@ -64,7 +64,7 @@ async function processData(data) {
     temperature: Number(element.temperature),
     humidity: Number(element.humidity),
     windSpeed: Number(element.windSpeed),
-    processedAt: new Date().toISOString(),
+    //processedAt: new Date().toISOString(),
   }));
 }
 
@@ -90,7 +90,3 @@ async function sendProcessedData(processedData) {
     console.error("Error sending processed data to Kafka:", error);
   }
 }
-
-module.exports = {
-  startDataProcessor,
-};
