@@ -1,5 +1,7 @@
-const dataGenerator = require("./services/data-generator");
-const dataProcessor = require("./services/data-processor");
+import * as dataGenerator from "./services/data-generator/index.js";
+import * as dataProcessor from "./services/data-processor/index.js";
+import * as storageService from "./services/storage-service/index.js";
+import * as db from "./services/storage-service/database.js";
 
 console.log("Starting Weather Kafka Application...");
 
@@ -10,6 +12,10 @@ async function startApplication() {
 
     console.log("Initializing Data Processor...");
     await dataProcessor.startDataProcessor();
+
+    console.log("Initializing Storage Service.");
+    await storageService.startStorageService();
+    await db.startPool();
 
     console.log("All services started successfully!");
   } catch (error) {
